@@ -1,11 +1,16 @@
 <script>
   import { D } from "./kg.js";
-  import { LEVELS, rankOptions } from "./rank.js";
+  import { LEVELS, rankOptions, taskChoices } from "./rank.js";
   import Filters from "./Filters.svelte";
   import BigCard from "./BigCard.svelte";
   import DataTable from "./DataTable.svelte";
   let { F = $bindable(), level = $bindable(), onopen } = $props();
 
+  const tasks = taskChoices();
+  const typesInFamily = $derived(tasks.types.filter((t) => t.family === F.tf));
+  const familyName = $derived(tasks.families.find((f) => f.id === F.tf)?.name || "");
+  const taskName = $derived(tasks.types.find((t) => t.id === F.tt)?.name || familyName);
+  const forTask = $derived(taskName ? ` for ${taskName}` : "");
   const rows = $derived(rankOptions(F, level));
   const featured = $derived(rows.filter((r) => r.s.papers >= 5).slice(0, 3));
   const levelInfo = $derived(LEVELS.find((l) => l.id === level));
@@ -41,19 +46,27 @@
 </section>
 
 <section class="section">
-  <h2 class="section-label">What do you want to rank?</h2>
-  <p class="section-hint">Choose one. The results below change to match.</p>
-  <div class="picks" role="radiogroup" aria-label="What to rank">
-    {#each LEVELS as l}
-      <button class="pick" role="radio" aria-checked={level === l.id} onclick={() => (level = l.id)}><strong>{l.pick}</strong><span>{l.help}</span></button>
+  <h2 class="section-label">What does your agent need to do?</h2>
+  <p class="section-hint">Pick the closest match, and the results below change to match. The numbers show how many papers tested that kind of task.</p>
+  <div class="picks" role="radiogroup" aria-label="Task">
+    <button class="pick" role="radio" aria-checked={!F.tf} onclick={() => { F.tf = ""; F.tt = ""; }}><strong>All tasks <em>{D.stats.papers}</em></strong><span>Everything in the data, across every kind of task.</span></button>
+    {#each tasks.families as t (t.id)}
+      <button class="pick" role="radio" aria-checked={F.tf === t.id} onclick={() => { F.tf = t.id; F.tt = ""; }}><strong>{t.name} <em>{t.papers}</em></strong><span>{t.help}</span></button>
     {/each}
   </div>
+  {#if F.tf}
+    <h3 class="sub">Which kind of task?</h3>
+    <div class="pills">
+      <button class="pill" aria-pressed={!F.tt} onclick={() => (F.tt = "")}>All of these</button>
+      {#each typesInFamily as t (t.id)}<button class="pill plain" aria-pressed={F.tt === t.id} onclick={() => (F.tt = t.id)}>{t.name} {t.papers}</button>{/each}
+    </div>
+  {/if}
 </section>
 
 <section class="section">
   <h2 class="section-label">Narrow it down</h2>
   <p class="section-hint">Optional. Nothing is filtered until you change one of these.</p>
-  <Filters bind:F />
+  <Filters bind:F bind:level showTask={false} />
 </section>
 
 {#if !rows.length}
@@ -61,7 +74,7 @@
 {:else}
   {#if featured.length}
     <section class="section">
-      <h2 class="section-label big">The best-supported {levelInfo.name}</h2>
+      <h2 class="section-label big">The best-supported {levelInfo.name}{forTask}</h2>
       <p class="section-hint">Each card is one {levelInfo.one}, not a paper, with results pooled from every paper that tested it. These won most often with enough papers behind them to take seriously.</p>
       <div class="cards">
         {#each featured as r, i (r.key)}<div class:wide={i === 0}><BigCard {r} {level} lens={F.lens} rank={i + 1} total={rows.length} lead={i === 0} {onopen} /></div>{/each}
@@ -72,7 +85,7 @@
   {/if}
 
   <section class="section">
-    <h2 class="section-label big">All {rows.length} {levelInfo.name}</h2>
+    <h2 class="section-label big">All {rows.length} {levelInfo.name}{forTask}</h2>
     <p class="section-hint">Best supported first: a high win rate counts for less when few papers back it. The bar has one notch per paper, with wins first. The percentages show how often it won under each kind of test. Select a row to open it.</p>
     <div class="panel flush"><DataTable {columns} {rows} {onopen} /></div>
   </section>
@@ -87,7 +100,10 @@
   .picks { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
   .pick { font: inherit; text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 16px; background: var(--card); color: var(--body); border: 1px solid var(--border); cursor: pointer; transition: background 150ms linear; }
   .pick:hover { background: var(--high); }
-  .pick strong { color: var(--head); font-size: 1rem; }
+  .pick strong { color: var(--head); font-size: 1rem; display: flex; justify-content: space-between; gap: 8px; }
+  .pick em { font: 500 13px "JetBrains Mono", monospace; color: var(--body); }
+  .sub { font-size: 1rem; margin: 24px 0 8px; }
+  .plain { text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 500; }
   .pick[aria-checked="true"] { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 15%, var(--card)); }
   .pick[aria-checked="true"] strong { color: var(--primary); }
   .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }

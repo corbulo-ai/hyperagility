@@ -102,6 +102,34 @@ export function productGroups(F, since) {
   return { groups, across: rowsOf(across, "all"), noDirect: [...new Set(makers.values())].filter((m) => !withDirect.has(m)) };
 }
 
+const TASK_HELP = {
+  gui_computer_use: "Operating websites, phone apps or a desktop by reading the screen.",
+  software_engineering: "Writing code, fixing repository issues, working in a terminal, finding vulnerabilities.",
+  knowledge_reasoning: "Solving math, logic and puzzles, or answering questions from what the model knows.",
+  information_seeking: "Finding answers across documents or the web, deep research, remembering past conversations.",
+  tool_api_use: "Calling tools and APIs, multi-step workflows, customer-service style conversations.",
+  embodied_simulation_planning: "Robots, simulated environments, games and step-by-step planning.",
+  safety_evaluation: "Resisting attacks and misuse, or judging and verifying other outputs.",
+  open_generation_interaction: "Open-ended chat, writing documents or media, negotiation.",
+  data_ml_science: "Data analysis, SQL and tables, machine-learning engineering, scientific work.",
+  multimodal_perception: "Answering questions about images and video.",
+};
+
+/** Task families and types that have results, largest first, for the main task picker. */
+export function taskChoices() {
+  const C = D.cmp, byFamily = new Map(), byType = new Map();
+  const add = (m, k, p) => { if (!m.has(k)) m.set(k, new Set()); m.get(k).add(p); };
+  for (let i = 0; i < D.nCmp; i++) {
+    const t = dv("tt", C.tt[i]), info = D.tax.task_type[t];
+    if (!t || t === "non_task_entry" || !info) continue;
+    add(byType, t, C.p[i]); add(byFamily, info.family, C.p[i]);
+  }
+  return {
+    families: [...byFamily.entries()].map(([id, p]) => ({ id, name: D.tax.task_family[id]?.name || pretty(id), help: TASK_HELP[id] || "", papers: p.size })).sort((a, b) => b.papers - a.papers),
+    types: [...byType.entries()].map(([id, p]) => ({ id, family: D.tax.task_type[id].family, name: D.tax.task_type[id].name, papers: p.size })).sort((a, b) => b.papers - a.papers),
+  };
+}
+
 export function failureRows() {
   const Fa = D.fail, M = new Map();
   for (let i = 0; i < Fa.p.length; i++) {

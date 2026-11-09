@@ -1,0 +1,6 @@
+# HyperAgility is open data. Crawlers and AI agents are welcome.
+# Please credit the original papers and this site: https://hyperagility.org/llms.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://hyperagility.org/sitemap.xml

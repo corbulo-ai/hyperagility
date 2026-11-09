@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Please cite the original paper when using a specific result, and credit HyperAgility when reusing the rankings or data."
+title: "HyperAgility: what works in LLM agent design"
+type: dataset
+authors:
+  - name: "Corbulo"
+url: "https://hyperagility.org"
+repository-code: "https://github.com/corbulo-ai/hyperagility"
+license: CC-BY-4.0
