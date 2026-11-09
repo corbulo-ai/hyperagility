@@ -1,0 +1,51 @@
+/* Corbulo Obsidian Monolith tokens and shared primitives. */
+@font-face { font-family: "Space Grotesk"; src: url("../node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2") format("woff2"); font-weight: 300 700; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
+
+:root, [data-theme="dark"] {
+  --bg: #0d0d0d; --surface: #131313; --card: #1c1c1c; --high: #2a2a2a; --highest: #353534; --lowest: #0e0e0e;
+  --border: #232323; --strong: #3a3a3a; --primary: #3b82f6; --primary-hover: #60a5fa;
+  --head: #ffffff; --body: #d1d5db; --muted: #6b7280;
+  --good: #34d399; --warn: #fbbf24; --bad: #f87171; --strip-lost: #3a3a3a;
+}
+[data-theme="light"] {
+  --bg: #ffffff; --surface: #ffffff; --card: #ffffff; --high: #f7f7f7; --highest: #f0f0f0; --lowest: #fcfcfc;
+  --border: #ebebeb; --strong: #d4d4d4; --primary: #2563eb; --primary-hover: #1d4ed8;
+  --head: #000000; --body: #1a1a1a; --muted: #666666;
+  --good: #059669; --warn: #d97706; --bad: #dc2626; --strip-lost: #d4d4d4;
+}
+
+* { box-sizing: border-box; border-radius: 0; }
+html, body { margin: 0; background: var(--bg); color: var(--body); font: 14px/1.55 "Space Grotesk", Inter, system-ui, sans-serif; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { color: var(--head); }
+a { color: var(--primary); }
+a:hover { color: var(--primary-hover); }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.mono { font-family: "JetBrains Mono", monospace; }
+
+.label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.section-label { font-size: 1.375rem; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; color: var(--head); margin: 0 0 8px; }
+.section-label.big { font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.1; letter-spacing: -0.02em; }
+.section-hint { color: var(--body); margin: 0 0 16px; max-width: 66ch; }
+.panel { background: var(--card); border: 1px solid var(--border); padding: 24px; }
+.section { margin-top: 32px; }
+
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field select, .field input, .search-input { font: inherit; color: var(--head); background: var(--card); border: 0; border-bottom: 2px solid var(--border); padding: 8px; width: 100%; outline: none; }
+.field select:focus, .field input:focus, .search-input:focus { border-bottom-color: var(--primary); }
+.field select:disabled { color: var(--muted); }
+
+.btn { font: inherit; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--body); background: none; border: 1px solid var(--strong); padding: 8px 16px; cursor: pointer; transition: background 150ms linear; }
+.btn:hover { background: var(--high); }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { font: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--head); background: none; border: 1px solid var(--high); padding: 6px 12px; cursor: pointer; }
+.pill[aria-pressed="true"] { border-color: var(--primary); color: var(--primary); background: color-mix(in srgb, var(--primary) 15%, transparent); }
+.tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+.tab { all: unset; cursor: pointer; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 8px 0; border-bottom: 2px solid transparent; white-space: nowrap; }
+.tab:hover { color: var(--head); }
+.tab[aria-selected="true"] { color: var(--primary); border-bottom-color: var(--primary); }
+.tab:focus-visible { outline: 2px solid var(--primary); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

@@ -1,7 +1,7 @@
 {
   "name": "hyperagility",
   "version": "1.0.0",
-  "description": "Interactive knowledge graph of published results on LLM agent design",
+  "description": "Evidence from published research on what works in LLM agent design",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -9,13 +9,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@sigma/edge-curve": "^3.1.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
-    "graphology": "^0.26.0",
-    "graphology-communities-louvain": "^2.0.2",
-    "graphology-layout": "^0.6.1",
-    "graphology-layout-forceatlas2": "^0.10.1",
-    "sigma": "^3.0.3",
     "svelte": "^5.57.3",
     "vite": "^8.3.6",
     "vite-plugin-singlefile": "^2.3.4"

@@ -1,4 +1,4 @@
-# Agent Design Knowledge Graph
+# HyperAgility
 
 An interactive map of what published research says about building LLM agents: which methods beat which, on what tasks and models, how they fail, and what they cost.
 
@@ -6,7 +6,7 @@ An interactive map of what published research says about building LLM agents: wh
 
 Results from 571 papers (mostly 2024–2026) were extracted and mapped to shared categories so they can be compared side by side. Every number links back to its paper, page and quote.
 
-| In the graph | Count |
+| In the data | Count |
 |---|---|
 | Papers | 571 |
 | Method-vs-method results | 29,353 |
@@ -22,7 +22,7 @@ Two numbers are compared only when they come from the same paper, model, task an
 
 The "Which results count" filter changes the evidence used:
 
-- **All:** everything papers reported.
+- **All results:** everything papers reported. This is the default.
 - **Independent:** only comparisons where neither side is the paper's own new method.
 - **Same budget:** only comparisons where both sides had the same compute.
 
@@ -43,7 +43,7 @@ Treat this as a guide to the literature, and check the source paper before relyi
 | File | Contents |
 |---|---|
 | [`public/papers.csv`](public/papers.csv) | Every paper: id, title, year, venue, link |
-| [`public/kg.json.gz`](public/kg.json.gz) | The full graph the app loads: taxonomies, results, failures, costs and evidence |
+| [`public/kg.json.gz`](public/kg.json.gz) | The full data set the app loads: categories, results, failures, costs and evidence |
 
 Paper PDFs and full text are not included. Follow the links to read the papers at their source. `kg.json.gz` is a released snapshot; the extraction pipeline that produces it is not part of this repository.
 
@@ -58,10 +58,16 @@ npm run dev
 
 `npm run build` writes a static site to `dist/` that can be served from any static host.
 
-## Licenses
+## License and credit
+
+Please credit both the original paper authors and this site. If you use a specific result or quote, cite the original paper and respect its license. If you reuse the rankings, categories, statistics or data set, credit HyperAgility with a link:
+
+> Source: HyperAgility (hyperagility.org), based on results from the cited papers.
 
 - **Code:** [MIT](LICENSE)
 - **Data:** [CC BY 4.0](DATA-LICENSE.md), with exceptions for material that belongs to the original authors
+
+Built by Corbulo.
 
 ## Corrections
 
