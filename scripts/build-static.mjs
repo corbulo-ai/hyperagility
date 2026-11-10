@@ -98,6 +98,10 @@ ${CREDIT_TEXT}
 - [All results in Markdown](${SITE}/index.html.md): Rankings of methods, approach families and model product lines, with paper counts, plus failure modes and costs
 - [Interactive site](${SITE}/): Filter by task and model, and open the evidence behind any number
 
+## Query it from an agent
+
+- [MCP server](${REPO}#use-it-from-your-agent): Run \`npx -y github:corbulo-ai/hyperagility\` as a stdio MCP server to query the same filters, rankings, head-to-head results, failure modes and papers. In Claude Code: \`claude mcp add hyperagility -- npx -y github:corbulo-ai/hyperagility\`
+
 ## Data
 
 - [Paper list](${SITE}/papers.csv): CSV with id, title, year, venue and link for all ${stats.papers} papers
