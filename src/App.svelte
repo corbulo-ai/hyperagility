@@ -8,6 +8,7 @@
   import Detail from "./Detail.svelte";
   import Filters from "./Filters.svelte";
   import License from "./License.svelte";
+  import Agents from "./Agents.svelte";
 
   const NAV = [["works", "What works"], ["models", "Models"], ["failures", "Failures"], ["costs", "Costs"], ["papers", "Papers"]];
   const FILTERED_DETAILS = ["option", "h2h", "task", "taskfam", "tested_on"];
@@ -15,7 +16,7 @@
   let ready = $state(false), err = $state("");
   let view = $state("works"), detail = $state(null), level = $state("class"), F = $state(defaultFilters());
   let dark = $state(true), q = $state(""), searchOpen = $state(false);
-  let lastHash = "";
+  let lastHash = "", agentsOpen = $state(false);
 
   // ---------- URL state: only non-default values, so links stay short and shareable ----------
   function snapshot() {
@@ -92,6 +93,7 @@
     <button class="brand" onclick={() => go("works", null)}>HyperAgility</button>
     <nav aria-label="Main">
       {#each NAV as [id, name]}<button class:on={view === id && view !== "about"} aria-current={view === id ? "page" : undefined} onclick={() => go(id, null)}>{name}</button>{/each}
+      <button onclick={() => (agentsOpen = true)}>Use with agents</button>
       <button class:on={view === "about"} onclick={() => go("about", { kind: "about" })}>About</button>
       <button class:on={view === "license"} aria-current={view === "license" ? "page" : undefined} onclick={() => go("license", null)}>License</button>
     </nav>
@@ -108,6 +110,7 @@
       </div>
       <button class="btn" onclick={() => (dark = !dark)}>{dark ? "Light" : "Dark"}</button>
     </header>
+    <Agents bind:open={agentsOpen} />
 
     <main>
       {#if err}<div class="panel"><h1>The data did not load</h1><p>{err}. Reload the page to try again.</p></div>

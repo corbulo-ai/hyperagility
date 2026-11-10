@@ -38,6 +38,35 @@ Rankings that hold under all three are the most trustworthy.
 
 Treat this as a guide to the literature, and check the source paper before relying on a specific result.
 
+## Use it from your agent
+
+An MCP server lets a coding agent query the same results as the site: methods ranked by task and model, head-to-head comparisons, costs, failure modes, and the papers behind each number. It runs locally, only reads, and takes category names, so nothing about your own setup is sent anywhere. Requires Node 20.19 or later.
+
+```sh
+claude mcp add hyperagility -- npx -y github:corbulo-ai/hyperagility   # Claude Code
+codex mcp add hyperagility -- npx -y github:corbulo-ai/hyperagility    # Codex
+```
+
+For other clients, add this to the MCP config:
+
+```json
+{ "mcpServers": { "hyperagility": { "command": "npx", "args": ["-y", "github:corbulo-ai/hyperagility"] } } }
+```
+
+Then ask the agent to label the methods in your setup with HyperAgility's categories, look up how they did for your task and model, check which reported failure modes you share, and list the papers to read.
+
+| Tool | Returns |
+|---|---|
+| `kg_overview` | What the data holds, how to use the tools and read the numbers, known limits |
+| `kg_vocabulary` | Methods, named systems, task types, design facets, failure modes and models, with definitions |
+| `kg_methods` | The "What works" ranking under a task, model, lens or year filter |
+| `kg_compare` | Two options head-to-head, by task and model size, with quoted results |
+| `kg_inspect` | One method, facet, task, failure mode, cost, model or paper in full |
+| `kg_papers` | Papers matching a method, task, model or failure mode, with links |
+| `kg_failures` | Failure modes reported for a method or task, with definitions and papers |
+
+The server uses the site's own code (`src/kg.js`, `src/inspect.js`, `src/rank.js`), so its numbers match the site. On start it loads the data the site is currently serving and falls back to the snapshot in this repository; set `HYPERAGILITY_OFFLINE=1` to skip the download. `node mcp/server.mjs --http 8787` serves it over HTTP at `/mcp` instead of stdio.
+
 ## Data
 
 | File | Contents |
